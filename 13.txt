@@ -1,0 +1,117 @@
+%option noyywrap
+%{
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include"y.tab.h"
+%}
+a       [a-zA-Z]
+n       [0-9]
+id      {a}({a}|{n}|_)*
+%%
+
+[ \t\n] {;}
+"int"   {return INT;}
+"char"  {return CHAR;}
+"float" {return FLOAT;}
+{id}    {yylval.id=strdup(yytext);return ID;}
+{n}+    {yylval.val=strdup(yytext);return NUM;}
+.       {return yytext[0];}
+
+%%
+
+%{
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+extern int yylex();
+extern FILE *yyin;
+FILE *out;
+void gen(char*);
+char buff[1000];
+int t=0;
+char* temp();
+%}
+
+%union{
+        char *id;
+        char *val;
+        char *addr;
+        struct list{
+                char *addr;
+                char *arr;
+                char *type;
+        } l;
+};
+
+%token  INT CHAR FLOAT NUM ID
+%left '+' '-'
+%left '*' '/'
+
+%%
+prog:   prog stmt ';'
+        |
+        ;
+
+stmt:   ID '=' expr     {sprintf(buff,"%s = %s",$1.id,$3.addr);
+                         gen(buff);}
+        |list '=' expr  {sprintf(buff,"%s[%s] = %s",$1.l.arr,$1.l.addr,$3.addr);
+                         gen(buff);}
+        ;
+
+expr:   expr '+' expr   {$$.addr = strdup(temp());
+                         sprintf(buff,"%s = %s + %s",$$.addr,$1.addr,$3.addr);
+                         gen(buff);}
+        |expr '-' expr  {$$.addr = strdup(temp());
+                         sprintf(buff,"%s = %s - %s",$$.addr,$1.addr,$3.addr);
+                         gen(buff);}
+        |expr '*' expr  {$$.addr = strdup(temp());
+                         sprintf(buff,"%s = %s * %s",$$.addr,$1.addr,$3.addr);
+                         gen(buff);}
+        |expr '/' expr  {$$.addr = strdup(temp());
+                         sprintf(buff,"%s = %s / %s",$$.addr,$1.addr,$3.addr);
+                         gen(buff);}
+        |list           {$$.addr = strdup(temp());
+                         sprintf(buff,"%s = %s [%s]",$$.addr,$1.l.arr,$1.l.addr);
+                         gen(buff);}
+        |ID             {$$.addr = strdup($1.id);}
+        |NUM            {$$.addr = strdup($1.val);}
+        ;
+
+list:   ID '[' expr ']'         {$$.l.addr = strdup(temp());
+                                 $$.l.arr = strdup($1.id);
+                                 $$.l.type = strdup("size");
+                                 //$$.addr = strdup(temp());
+                                 sprintf(buff,"%s = %s * %s",$$.l.addr,$3.addr,$$.l.type);
+                                 gen(buff);}
+
+        |list '[' expr ']'      {$$.l.arr = strdup($1.l.arr);
+                                 $$.l.type = strdup("size");
+                                 char *tempvar = strdup(temp());
+                                 $$.l.addr = strdup(temp());
+                                 sprintf(buff,"%s = %s * %s",tempvar,$3.addr,$$.l.type);
+                                 gen(buff);
+                                 sprintf(buff,"%s = %s + %s",$$.l.addr,$1.l.addr,tempvar);
+                                 gen(buff);}
+
+%%
+
+char* temp(){
+        sprintf(buff,"t%d",t);
+        t++;
+        return buff;
+}
+
+void yyerror(char *s){
+        printf("%s\n",s);
+}
+
+void gen(char *tac){
+        fprintf(out,"%s\n",tac);
+}
+
+void main(){
+        yyin = fopen("input.c","r");
+        out = fopen("output.txt","w");
+        yyparse();
+}
