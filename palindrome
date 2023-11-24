@@ -1,0 +1,41 @@
+public class PalindromicPrime {
+    public static void main(String[] args) {
+        int count = 0; // To keep track of the number of palindromic primes found
+        int number = 2; // Start checking from the first prime number
+
+        while (count < 20) {
+            if (isPrime(number) && isPalindromic(number)) {
+                System.out.println(number);
+                count++;
+            }
+            number++;
+        }
+    }
+
+    // Check if a number is prime
+    private static boolean isPrime(int num) {
+        if (num < 2) {
+            return false;
+        }
+        for (int i = 2; i <= Math.sqrt(num); i++) {
+            if (num % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Check if a number is palindromic
+    private static boolean isPalindromic(int num) {
+        int originalNum = num;
+        int reverseNum = 0;
+
+        while (num > 0) {
+            int digit = num % 10;
+            reverseNum = reverseNum * 10 + digit;
+            num /= 10;
+        }
+
+        return originalNum == reverseNum;
+    }
+}
