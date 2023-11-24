@@ -1,0 +1,63 @@
+public class EmployeeHours {
+    public static void main(String[] args) {
+        // Create a 2D array to store working hours of 5 employees for 7 days
+        int[][] hoursWorked = {
+            {8, 7, 6, 8, 9, 5, 7},
+            {7, 8, 8, 6, 7, 6, 8},
+            {6, 6, 5, 7, 7, 8, 9},
+            {8, 7, 8, 9, 6, 7, 6},
+            {7, 8, 9, 6, 7, 6, 8}
+        };
+
+        // Find the employee who worked for the longest time in a given day
+        findEmployeeWithLongestDay(hoursWorked);
+
+        // Find the day in which the maximum hours were worked by employees
+        findDayWithMaxHours(hoursWorked);
+    }
+
+    // Method to find the employee who worked for the longest time in a given day
+    private static void findEmployeeWithLongestDay(int[][] hoursWorked) {
+        int maxHours = 0;
+        int employeeIndex = -1;
+        int dayIndex = -1;
+
+        for (int i = 0; i < hoursWorked.length; i++) {
+            for (int j = 0; j < hoursWorked[i].length; j++) {
+                if (hoursWorked[i][j] > maxHours) {
+                    maxHours = hoursWorked[i][j];
+                    employeeIndex = i;
+                    dayIndex = j;
+                }
+            }
+        }
+
+        System.out.println("Employee who worked the longest on a given day:");
+        System.out.println("Employee Index: " + employeeIndex);
+        System.out.println("Day Index: " + dayIndex);
+        System.out.println("Hours Worked: " + maxHours);
+        System.out.println();
+    }
+
+    // Method to find the day in which the maximum hours were worked by employees
+    private static void findDayWithMaxHours(int[][] hoursWorked) {
+        int maxDayHours = 0;
+        int dayIndex = -1;
+
+        for (int j = 0; j < hoursWorked[0].length; j++) {
+            int totalHours = 0;
+            for (int i = 0; i < hoursWorked.length; i++) {
+                totalHours += hoursWorked[i][j];
+            }
+
+            if (totalHours > maxDayHours) {
+                maxDayHours = totalHours;
+                dayIndex = j;
+            }
+        }
+
+        System.out.println("Day with the maximum hours worked by employees:");
+        System.out.println("Day Index: " + dayIndex);
+        System.out.println("Total Hours Worked: " + maxDayHours);
+    }
+}
