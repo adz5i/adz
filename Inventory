@@ -1,0 +1,79 @@
+class Inventory {
+    private String itemName;
+    private double itemCost;
+    private int numberOfItems;
+
+    // Constructor with three arguments
+    public Inventory(String itemName, double itemCost, int numberOfItems) {
+        this.itemName = itemName;
+        this.itemCost = itemCost;
+        this.numberOfItems = numberOfItems;
+    }
+
+    // Procure items and increase the number of items
+    public void procureItems(int qty) {
+        if (qty > 0) {
+            numberOfItems += qty;
+        } else {
+            throw new IllegalArgumentException("Quantity must be greater than zero for procurement.");
+        }
+    }
+
+    // Sell items and decrease the number of items
+    public void sellItems(int qty) throws InsufficientItemsException {
+        if (qty > 0 && qty <= numberOfItems) {
+            numberOfItems -= qty;
+        } else {
+            throw new InsufficientItemsException("Insufficient items to sell.");
+        }
+    }
+
+    // Display Inventory details
+    public void display() {
+        System.out.println("Inventory Details:");
+        System.out.println("Item Name: " + itemName);
+        System.out.println("Item Cost: $" + itemCost);
+        System.out.println("Number of Items: " + numberOfItems);
+    }
+}
+
+// Custom exception for insufficient items during sale
+class InsufficientItemsException extends Exception {
+    public InsufficientItemsException(String message) {
+        super(message);
+    }
+}
+
+public class InventoryTest {
+    public static void main(String[] args) {
+        // Create an instance of the Inventory class
+        Inventory inventory = new Inventory("Widget", 10.99, 50);
+
+        // Display initial details
+        inventory.display();
+
+        // Procure items
+        try {
+            inventory.procureItems(20);
+            inventory.display();
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        // Sell items
+        try {
+            inventory.sellItems(10);
+            inventory.display();
+        } catch (InsufficientItemsException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        // Try to sell more items than available (Exception handling)
+        try {
+            inventory.sellItems(50); // This should throw an exception
+            inventory.display(); // This won't be executed if an exception occurs
+        } catch (InsufficientItemsException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
