@@ -1,0 +1,60 @@
+import java.io.IOException;
+import java.nio.file.*;
+import java.util.Scanner;
+
+public class AddressBookFile {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        try {
+            // Get details from the user
+            System.out.print("Enter name: ");
+            String name = scanner.nextLine();
+
+            System.out.print("Enter street name: ");
+            String streetName = scanner.nextLine();
+
+            System.out.print("Enter city: ");
+            String city = scanner.nextLine();
+
+            System.out.print("Enter state: ");
+            String state = scanner.nextLine();
+
+            System.out.print("Enter zip code: ");
+            String zipCode = scanner.nextLine();
+
+            // Create a string with the address details
+            String addressDetails = name + ", " + streetName + ", " + city + ", " + state + ", " + zipCode;
+
+            // Write the details to a file
+            writeToFile("address_book.txt", addressDetails);
+
+            System.out.println("Address details written to file successfully.");
+
+            // Read and display the contents of the file
+            System.out.println("\nReading Address Book from file:");
+
+            String fileContent = readFromFile("address_book.txt");
+            System.out.println(fileContent);
+
+        } catch (IOException e) {
+            System.err.println("Error: " + e.getMessage());
+        } finally {
+            scanner.close();
+        }
+    }
+
+    // Method to write data to a file
+    private static void writeToFile(String fileName, String data) throws IOException {
+        Path path = Paths.get(fileName);
+        Files.write(path, data.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+    }
+
+    // Method to read data from a file
+    private static String readFromFile(String fileName) throws IOException {
+        Path path = Paths.get(fileName);
+        byte[] data = Files.readAllBytes(path);
+        return new String(data);
+    }
+}
