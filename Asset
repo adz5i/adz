@@ -1,0 +1,109 @@
+// Abstract class Asset
+abstract class Asset {
+    private int serialNumber;
+    private double assetCost;
+    private double insuredAmount = 0;
+
+    // Constructor with args
+    public Asset(int serialNumber, double assetCost) {
+        this.serialNumber = serialNumber;
+        this.assetCost = assetCost;
+        this.insuredAmount = 0; // Initialized to zero amount
+    }
+
+    // toString method
+    @Override
+    public String toString() {
+        return "Serial Number: " + serialNumber + "\nAsset Cost: $" + assetCost + "\nInsured Amount: $" + insuredAmount;
+    }
+
+    // Getter for assetCost
+    public double getAssetCost() {
+        return assetCost;
+    }
+
+    // Getter for insuredAmount
+    public double getInsuredAmount() {
+        return insuredAmount;
+    }
+}
+
+// Interface Insurance
+interface Insurance {
+    void takeInsurance();
+}
+
+// Derived class ElectronicAppliances from Asset implementing Insurance
+class ElectronicAppliances extends Asset implements Insurance {
+    private String brand;
+    private int modelNo;
+    private String type;
+    private boolean amc;
+    private double amcAmount;
+
+    // Constructor with args
+    public ElectronicAppliances(int serialNumber, double assetCost, String brand, int modelNo, String type) {
+        super(serialNumber, assetCost);
+        this.brand = brand;
+        this.modelNo = modelNo;
+        this.type = type;
+        this.amc = false; // Initialized to 0
+        this.amcAmount = 0; // Initialized to zero amount
+    }
+
+    // Setter for AMC
+    public void setAMC() {
+        this.amc = true;
+    }
+
+    // Getter for AMC details
+    public boolean getAMCDetails() {
+        return amc;
+    }
+
+    // Setter for AMC amount
+    public void setAMCAmount(double amcAmount) {
+        this.amcAmount = amcAmount;
+    }
+
+    // Method to renew AMC
+    public void renewAMC(double amcAmount) {
+        setAMC();
+        setAMCAmount(amcAmount);
+    }
+
+    // Overridden method from Asset
+    @Override
+    public void takeInsurance() {
+        // Initialize insuredAmount as 25% of assetCost
+        double insuranceAmount = 0.25 * getAssetCost();
+        this.getInsuredAmount();
+        System.out.println("Insurance taken for $" + insuranceAmount);
+    }
+
+    // Overridden toString method
+    @Override
+    public String toString() {
+        return super.toString() + "\nBrand: " + brand + "\nModel Number: " + modelNo +
+                "\nType: " + type + "\nAMC: " + amc + "\nAMC Amount: $" + amcAmount;
+    }
+}
+
+// Driver class to test the functionalities
+public class Driver {
+    public static void main(String[] args) {
+        ElectronicAppliances appliance = new ElectronicAppliances(123, 500.0, "ABC", 456, "Television");
+
+        System.out.println("Before AMC Renewal:");
+        System.out.println(appliance.toString());
+
+        appliance.renewAMC(100.0);
+
+        System.out.println("\nAfter AMC Renewal:");
+        System.out.println(appliance.toString());
+
+        appliance.takeInsurance();
+
+        // You can test other functionalities as needed.
+    }
+}
