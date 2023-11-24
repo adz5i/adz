@@ -1,0 +1,42 @@
+public class StopWatch {
+    private long startSeconds;
+    private long endSeconds;
+
+    // No-arg constructor that initializes data fields with zero
+    public StopWatch() {
+        startSeconds = 0;
+        endSeconds = 0;
+    }
+
+    // Method to start the stopwatch
+    public void start() {
+        startSeconds = System.currentTimeMillis() / 1000; // Current time in seconds
+    }
+
+    // Method to stop the stopwatch
+    public void stop() {
+        endSeconds = System.currentTimeMillis() / 1000; // Current time in seconds
+    }
+
+    // Method to get the elapsed time for the stopwatch in seconds
+    public long getElapsedTime() {
+        return endSeconds - startSeconds;
+    }
+
+    public static void main(String[] args) {
+        // Create an instance of StopWatch
+        StopWatch stopwatch = new StopWatch();
+
+        // Start the stopwatch
+        stopwatch.start();
+
+        // Simulate some task or process
+        // ...
+
+        // Stop the stopwatch
+        stopwatch.stop();
+
+        // Display the elapsed time
+        System.out.println("Elapsed Time: " + stopwatch.getElapsedTime() + " seconds");
+    }
+}
