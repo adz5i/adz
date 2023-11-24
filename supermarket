@@ -1,0 +1,40 @@
+package week8;
+public class NegativeValueException extends Exception {
+    public NegativeValueException(String message) {
+        super(message);
+    }
+}
+
+public class SupermarketItem {
+    private String description;
+    private int stock;
+    private double price;
+
+    public SupermarketItem(String description, int stock, double price) throws NegativeValueException {
+        if (stock < 0 || price < 0) {
+            throw new NegativeValueException("Stock and price cannot be initialized with negative values");
+        }
+
+        this.description = description;
+        this.stock = stock;
+        this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "SupermarketItem{" +
+                "description='" + description + '\'' +
+                ", stock=" + stock +
+                ", price=" + price +
+                '}';
+    }
+
+    public static void main(String[] args) {
+        try {
+            SupermarketItem item = new SupermarketItem("Example Item", 10, 5.99);
+            System.out.println(item);
+        } catch (NegativeValueException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+}
