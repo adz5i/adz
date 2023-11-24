@@ -1,0 +1,125 @@
+class Person {
+    private String name;
+    private String address;
+    private String phoneNumber;
+
+    public Person(String name, String address, String phoneNumber) {
+        this.name = name;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+}
+
+class Customer extends Person {
+    private int customerNumber;
+    private boolean onMailingList;
+
+    public Customer(String name, String address, String phoneNumber, int customerNumber, boolean onMailingList) {
+        super(name, address, phoneNumber);
+        this.customerNumber = customerNumber;
+        this.onMailingList = onMailingList;
+    }
+
+    public int getCustomerNumber() {
+        return customerNumber;
+    }
+
+    public void setCustomerNumber(int customerNumber) {
+        this.customerNumber = customerNumber;
+    }
+
+    public boolean isOnMailingList() {
+        return onMailingList;
+    }
+
+    public void setOnMailingList(boolean onMailingList) {
+        this.onMailingList = onMailingList;
+    }
+}
+
+class PreferredCustomer extends Customer {
+    private double purchasesAmount;
+    private int discountLevel;
+
+    public PreferredCustomer(String name, String address, String phoneNumber, int customerNumber, boolean onMailingList) {
+        super(name, address, phoneNumber, customerNumber, onMailingList);
+        this.purchasesAmount = 0.0;
+        updateDiscountLevel();
+    }
+
+    public double getPurchasesAmount() {
+        return purchasesAmount;
+    }
+
+    public void setPurchasesAmount(double purchasesAmount) {
+        this.purchasesAmount = purchasesAmount;
+        updateDiscountLevel();
+    }
+
+    public int getDiscountLevel() {
+        return discountLevel;
+    }
+
+    private void updateDiscountLevel() {
+        if (purchasesAmount >= 2000) {
+            discountLevel = 10;
+        } else if (purchasesAmount >= 1000) {
+            discountLevel = 7;
+        } else {
+            discountLevel = 0;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "PreferredCustomer{" +
+                "name='" + getName() + '\'' +
+                ", purchasesAmount=" + purchasesAmount +
+                ", discountLevel=" + discountLevel +
+                '}';
+    }
+}
+
+public class CustomerTest {
+    public static void main(String[] args) {
+        // Create a PreferredCustomer object
+        PreferredCustomer preferredCustomer = new PreferredCustomer(
+                "John Doe", "123 Main St", "555-1234", 12345, true);
+
+        // Display initial information
+        System.out.println("Initial Information:");
+        System.out.println(preferredCustomer);
+
+        // Make purchases to update discount level
+        preferredCustomer.setPurchasesAmount(1500.0);
+        preferredCustomer.setPurchasesAmount(600.0);
+
+        // Display updated information
+        System.out.println("\nUpdated Information after purchases:");
+        System.out.println(preferredCustomer);
+    }
+}
