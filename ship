@@ -1,0 +1,78 @@
+class Ship {
+    private String name;
+    private int year;
+
+    // Constructor
+    public Ship(String name, int year) {
+        this.name = name;
+        this.year = year;
+    }
+
+    // Getters and setters
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    // toString method
+    @Override
+    public String toString() {
+        return "Ship{" +
+                "name='" + name + '\'' +
+                ", year=" + year +
+                '}';
+    }
+}
+
+class CruiseShip extends Ship {
+    private int maxPassengers;
+
+    // Constructor
+    public CruiseShip(String name, int year, int maxPassengers) {
+        super(name, year);
+        this.maxPassengers = maxPassengers;
+    }
+
+    // Getters and setters
+    public int getMaxPassengers() {
+        return maxPassengers;
+    }
+
+    public void setMaxPassengers(int maxPassengers) {
+        this.maxPassengers = maxPassengers;
+    }
+
+    // Override toString method
+    @Override
+    public String toString() {
+        return "CruiseShip{" +
+                "name='" + getName() + '\'' +
+                ", maxPassengers=" + maxPassengers +
+                '}';
+    }
+}
+
+public class ShipTest {
+    public static void main(String[] args) {
+        // Test the Ship class
+        Ship ship = new Ship("Ocean Voyager", 2005);
+        System.out.println("Ship Details:");
+        System.out.println(ship);
+
+        // Test the CruiseShip class
+        CruiseShip cruiseShip = new CruiseShip("Caribbean Princess", 2010, 3000);
+        System.out.println("\nCruise Ship Details:");
+        System.out.println(cruiseShip);
+    }
+}
