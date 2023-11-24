@@ -1,0 +1,68 @@
+// Even interface
+interface Even {
+    int EvenLimit = 0; // Default value, to be initialized by the implementing class
+    void EvenNumberGeneration();
+}
+
+// Odd interface
+interface Odd {
+    int OddLimit = 0; // Default value, to be initialized by the implementing class
+    void OddNumberGeneration();
+}
+
+// NumberGenerator class implementing both Even and Odd interfaces
+class NumberGenerator implements Even, Odd {
+    private int[] numbers; // Array to store even and odd numbers
+
+    // Constructor to initialize the array size based on the maximum limits
+    public NumberGenerator() {
+        numbers = new int[EvenLimit + OddLimit];
+    }
+
+    // Implementing EvenNumberGeneration method
+    @Override
+    public void EvenNumberGeneration() {
+        int index = 0;
+        for (int i = 2; i <= EvenLimit; i += 2) {
+            numbers[index++] = i;
+        }
+    }
+
+    // Implementing OddNumberGeneration method
+    @Override
+    public void OddNumberGeneration() {
+        int index = EvenLimit;
+        for (int i = 1; i <= OddLimit; i += 2) {
+            numbers[index++] = i;
+        }
+    }
+
+    // Method to display the sorted array
+    public void displaySortedNumbers() {
+        // Sorting the array
+        java.util.Arrays.sort(numbers);
+
+        // Displaying the sorted array
+        System.out.print("Sorted Numbers: ");
+        for (int number : numbers) {
+            System.out.print(number + " ");
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        // Initializing EvenLimit and OddLimit
+        NumberGenerator.EvenLimit = 5;
+        NumberGenerator.OddLimit = 5;
+
+        // Creating an instance of NumberGenerator
+        NumberGenerator numberGenerator = new NumberGenerator();
+
+        // Generating even and odd numbers
+        numberGenerator.EvenNumberGeneration();
+        numberGenerator.OddNumberGeneration();
+
+        // Displaying the sorted numbers
+        numberGenerator.displaySortedNumbers();
+    }
+}
