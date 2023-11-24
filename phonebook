@@ -1,0 +1,83 @@
+public class Phonebook {
+    private String name;
+    private String category;
+    private int primaryContact;
+    private int secondaryContact;
+
+    // Constructor
+    public Phonebook(String name, String category, int primaryContact, int secondaryContact) {
+        this.name = name;
+        this.category = category;
+        this.primaryContact = primaryContact;
+        this.secondaryContact = secondaryContact;
+    }
+
+    // Display method
+    public void display() {
+        System.out.println("Name: " + name);
+        System.out.println("Category: " + category);
+        System.out.println("Primary Contact: " + primaryContact);
+        System.out.println("Secondary Contact: " + secondaryContact);
+        System.out.println();
+    }
+
+    // Search method
+    public boolean search(String targetName) {
+        return name.equalsIgnoreCase(targetName);
+    }
+
+    // Find method to count the number of relatives
+    public static int find(Phonebook[] phonebooks) {
+        int count = 0;
+        for (Phonebook entry : phonebooks) {
+            if (entry.getCategory().equalsIgnoreCase("relatives")) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    // Getter for category
+    public String getCategory() {
+        return category;
+    }
+
+    public static void main(String[] args) {
+        // Example usage
+        Phonebook[] phonebooks = {
+            new Phonebook("John Doe", "friends", 123456789, 987654321),
+            new Phonebook("Jane Smith", "relatives", 111222333, 444555666),
+            new Phonebook("Bob Johnson", "business", 999888777, 333222111)
+        };
+
+        // Display all entries
+        for (Phonebook entry : phonebooks) {
+            entry.display();
+        }
+
+        // Search for a name
+        String targetName = "John Doe";
+        boolean found = false;
+        for (Phonebook entry : phonebooks) {
+            if (entry.search(targetName)) {
+                found = true;
+                System.out.println(targetName + " found in the phonebook.");
+                break;
+            }
+        }
+        if (!found) {
+            System.out.println(targetName + " not found in the phonebook.");
+        }
+
+        // Count the number of relatives
+        int relativesCount = find(phonebooks);
+        System.out.println("Number of relatives in the phonebook: " + relativesCount);
+    }
+}
+
+
+mp ement File andler elass that contains write and read
+methods to read and write objects of Phonebook defined
+in question 12. Write a test program that will print the
+Phonebook whose primary contact is O.
+
