@@ -1,0 +1,48 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class SaveWordsToFile {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        FileWriter fileWriter = null;
+
+        try {
+            // Create a FileWriter object for the text file
+            fileWriter = new FileWriter("words.txt");
+
+            System.out.println("Enter words (type STOP to end):");
+
+            // Continue taking input until the user enters "STOP"
+            while (true) {
+                String word = scanner.nextLine();
+
+                if (word.equalsIgnoreCase("STOP")) {
+                    System.out.println("Input stopped. Words saved to 'words.txt'");
+                    break;
+                }
+
+                // Write the word to the file
+                fileWriter.write(word + "\n");
+            }
+
+        } catch (IOException e) {
+            System.err.println("Error: " + e.getMessage());
+        } finally {
+            try {
+                // Close the FileWriter
+                if (fileWriter != null) {
+                    fileWriter.close();
+                }
+            } catch (IOException e) {
+                System.err.println("Error closing FileWriter: " + e.getMessage());
+            }
+
+            // Close the scanner
+            if (scanner != null) {
+                scanner.close();
+            }
+        }
+    }
+}
