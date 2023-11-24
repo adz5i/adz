@@ -1,0 +1,215 @@
+
+Certainly! Below is the implementation of the abstract class Vehicle, the class Car that extends Vehicle, and the Analysable interface. The main program creates an array of Vehicle objects to store instances of Car. The interface is used to find the car with the maximum number of rentals:
+
+java
+Copy code
+// Abstract class Vehicle
+abstract class Vehicle {
+    protected int vehicleNumber;
+    protected String brand;
+    protected String model;
+    protected double vehicleCost;
+    protected int numberOfRentals;
+
+    public Vehicle(int vehicleNumber, String brand, String model, double vehicleCost) {
+        this.vehicleNumber = vehicleNumber;
+        this.brand = brand;
+        this.model = model;
+        this.vehicleCost = vehicleCost;
+        this.numberOfRentals = 0; // Initialized to zero
+    }
+
+    // Abstract method
+    abstract void rent();
+
+    // Getters and setters (omitted for brevity)
+}
+
+// Class Car that extends Vehicle
+class Car extends Vehicle {
+    private double mileage;
+    private int year;
+
+    public Car(int vehicleNumber, String brand, String model, double vehicleCost, double mileage, int year) {
+        super(vehicleNumber, brand, model, vehicleCost);
+        this.mileage = mileage;
+        this.year = year;
+    }
+
+    @Override
+    void rent() {
+        numberOfRentals++;
+    }
+
+    // Getters and setters (omitted for brevity)
+}
+
+// Interface Analysable
+interface Analysable {
+    Car findMaxRentedCar(Vehicle[] vehicles);
+}
+
+// Main program
+public class MainProgram implements Analysable {
+    public static void main(String[] args) {
+        // Create an array of Vehicles to store objects of Car
+        Vehicle[] vehicles = new Vehicle[3];
+
+        // Create instances of Car and store in the array
+        vehicles[0] = new Car(1, "Toyota", "Camry", 25000.0, 30.5, 2020);
+        vehicles[1] = new Car(2, "Honda", "Accord", 28000.0, 28.0, 2021);
+        vehicles[2] = new Car(3, "Ford", "Fusion", 23000.0, 25.5, 2019);
+
+        // Rent some cars
+        vehicles[0].rent();
+        vehicles[0].rent();
+        vehicles[1].rent();
+        vehicles[2].rent();
+        vehicles[2].rent();
+        vehicles[2].rent();
+
+        // Use the Analysable interface to find the car with the maximum number of rentals
+        Analysable analyser = new MainProgram();
+        Car maxRentedCar = analyser.findMaxRentedCar(vehicles);
+
+        System.out.println("Car with the maximum number of rentals:");
+        System.out.println("Brand: " + maxRentedCar.brand);
+        System.out.println("Model: " + maxRentedCar.model);
+        System.out.println("Number of Rentals: " + maxRentedCar.numberOfRentals);
+    }
+
+    @Override
+    public Car findMaxRentedCar(Vehicle[] vehicles) {
+        Car maxRentedCar = null;
+        int maxRentals = 0;
+
+        for (Vehicle vehicle : vehicles) {
+            if (vehicle instanceof Car) {
+                Car car = (Car) vehicle;
+                if (car.numberOfRentals > maxRentals) {
+                    maxRentals = car.numberOfRentals;
+                    maxRentedCar = car;
+                }
+            }
+        }
+
+        return maxRentedCar;
+    }
+}
+This example demonstrates the use of an abstract class, a subclass, an interface, and a main program to work with an array of Vehicle objects that includes instances of Car. The Analysable interface is used to find the car with the maximum number of rentals in the array.
+
+
+
+
+User
+inlcude set and get
+ChatGPT
+Certainly! I'll include basic getter and setter methods for the relevant fields in the Vehicle and Car classes. Here's the updated code:
+
+java
+Copy code
+// Abstract class Vehicle
+abstract class Vehicle {
+    protected int vehicleNumber;
+    protected String brand;
+    protected String model;
+    protected double vehicleCost;
+    protected int numberOfRentals;
+
+    public Vehicle(int vehicleNumber, String brand, String model, double vehicleCost) {
+        this.vehicleNumber = vehicleNumber;
+        this.brand = brand;
+        this.model = model;
+        this.vehicleCost = vehicleCost;
+        this.numberOfRentals = 0; // Initialized to zero
+    }
+
+    // Abstract method
+    abstract void rent();
+
+    // Getters and setters
+    public int getVehicleNumber() {
+        return vehicleNumber;
+    }
+
+    public void setVehicleNumber(int vehicleNumber) {
+        this.vehicleNumber = vehicleNumber;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public double getVehicleCost() {
+        return vehicleCost;
+    }
+
+    public void setVehicleCost(double vehicleCost) {
+        this.vehicleCost = vehicleCost;
+    }
+
+    public int getNumberOfRentals() {
+        return numberOfRentals;
+    }
+
+    public void setNumberOfRentals(int numberOfRentals) {
+        this.numberOfRentals = numberOfRentals;
+    }
+}
+
+// Class Car that extends Vehicle
+class Car extends Vehicle {
+    private double mileage;
+    private int year;
+
+    public Car(int vehicleNumber, String brand, String model, double vehicleCost, double mileage, int year) {
+        super(vehicleNumber, brand, model, vehicleCost);
+        this.mileage = mileage;
+        this.year = year;
+    }
+
+    @Override
+    void rent() {
+        numberOfRentals++;
+    }
+
+    // Getters and setters
+    public double getMileage() {
+        return mileage;
+    }
+
+    public void setMileage(double mileage) {
+        this.mileage = mileage;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+}
+
+// Interface Analysable
+interface Analysable {
+    Car findMaxRentedCar(Vehicle[] vehicles);
+}
+
+// Main program
+public class MainProgram implements Analysable {
+    // (Main program remains unchanged)
+}
+Now, each class has getter and setter methods for their respective fields. You can use these methods to access and modify the private fields in a controlled manner.
