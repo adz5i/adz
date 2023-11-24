@@ -1,0 +1,125 @@
+I ) Create a class called Team which contains details of enj students who are participated in 3
+events (event- 1, event-2 & event-3) and also the scores for the events of each student
+Student details includes Studentname, RegisterNumber and Class. RegisterNumber of the
+student has to be generated automatically without user input. Define the member functions
+for the following operations:
+- Initialize the RegisterNumber
+- Getting the details of students
+-Finding the total score ofeach student and
+• Finding the student who has secured least points in event-2.
+Define a Test class to test the above mentioned operations.
+
+//
+import java.util.Scanner;
+
+// Student class to represent details of a student
+class Student {
+    String studentName;
+    int registerNumber;
+    String studentClass;
+    int[] eventScores;
+
+    // Constructor to initialize student details and generate register number
+    public Student(String studentName, String studentClass, int[] eventScores) {
+        this.studentName = studentName;
+        this.studentClass = studentClass;
+        this.eventScores = eventScores;
+        this.registerNumber = generateRegisterNumber();
+    }
+
+    // Method to generate a unique register number for each student
+    private static int generateRegisterNumber() {
+        // This is a simple example, you may want to implement a more sophisticated logic
+        // to generate a unique register number.
+        return (int) (Math.random() * 1000 + 1000);
+    }
+
+    // Method to display student details
+    public void displayStudentDetails() {
+        System.out.println("Student Name: " + studentName);
+        System.out.println("Register Number: " + registerNumber);
+        System.out.println("Class: " + studentClass);
+        System.out.println("Event Scores: " + eventScores[0] + ", " + eventScores[1] + ", " + eventScores[2]);
+        System.out.println();
+    }
+
+    // Method to calculate the total score of a student
+    public int calculateTotalScore() {
+        return eventScores[0] + eventScores[1] + eventScores[2];
+    }
+}
+
+// Team class to contain details of students
+class Team {
+    int numStudents;
+    Student[] students;
+
+    // Constructor to initialize the team with a given number of students
+    public Team(int numStudents) {
+        this.numStudents = numStudents;
+        this.students = new Student[numStudents];
+        initializeStudents();
+    }
+
+    // Method to initialize student details
+    private void initializeStudents() {
+        Scanner scanner = new Scanner(System.in);
+
+        for (int i = 0; i < numStudents; i++) {
+            System.out.println("Enter details for Student " + (i + 1) + ":");
+            System.out.print("Name: ");
+            String name = scanner.nextLine();
+            System.out.print("Class: ");
+            String studentClass = scanner.nextLine();
+            System.out.print("Event-1 Score: ");
+            int event1 = scanner.nextInt();
+            System.out.print("Event-2 Score: ");
+            int event2 = scanner.nextInt();
+            System.out.print("Event-3 Score: ");
+            int event3 = scanner.nextInt();
+
+            int[] eventScores = {event1, event2, event3};
+            students[i] = new Student(name, studentClass, eventScores);
+
+            scanner.nextLine(); // Consume the newline character
+        }
+    }
+
+    // Method to display details of all students
+    public void displayTeamDetails() {
+        for (Student student : students) {
+            student.displayStudentDetails();
+        }
+    }
+
+    // Method to find the student who has secured least points in event-2
+    public void findStudentWithLeastPointsInEvent2() {
+        int minScore = Integer.MAX_VALUE;
+        Student leastPointsStudent = null;
+
+        for (Student student : students) {
+            if (student.eventScores[1] < minScore) {
+                minScore = student.eventScores[1];
+                leastPointsStudent = student;
+            }
+        }
+
+        System.out.println("Student with least points in Event-2:");
+        leastPointsStudent.displayStudentDetails();
+    }
+}
+
+// Test class to test the Team operations
+public class TestTeam {
+    public static void main(String[] args) {
+        // Creating a team with 3 students
+        Team team = new Team(3);
+
+        // Displaying team details
+        System.out.println("Team Details:");
+        team.displayTeamDetails();
+
+        // Finding the student who has secured least points in event-2
+        team.findStudentWithLeastPointsInEvent2();
+    }
+}
