@@ -1,0 +1,89 @@
+//n java mp ement File andler elass that contains write and read
+methods to read and write objects of Phonebook defined
+in question 12. Write a test program that will print the
+Phonebook whose primary contact is O.
+//
+import java.io.*;
+import java.util.*;
+
+class Phonebook {
+    private String name;
+    private String category;
+    private int primaryContact;
+    private int secondaryContact;
+
+    public Phonebook(String name, String category, int primaryContact, int secondaryContact) {
+        this.name = name;
+        this.category = category;
+        this.primaryContact = primaryContact;
+        this.secondaryContact = secondaryContact;
+    }
+
+    public void display() {
+        System.out.println("Name: " + name);
+        System.out.println("Category: " + category);
+        System.out.println("Primary Contact: " + primaryContact);
+        System.out.println("Secondary Contact: " + secondaryContact);
+    }
+
+    public boolean search(String searchName) {
+        return this.name.equals(searchName);
+    }
+
+    public static int find(Phonebook[] phonebooks, String category) {
+        int count = 0;
+        for (Phonebook entry : phonebooks) {
+            if (entry.category.equals(category)) {
+                count++;
+            }
+        }
+        return count;
+    }
+}
+
+class FileHandler {
+    public static void writeToFile(Phonebook[] phonebooks, String filename) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+            oos.writeObject(phonebooks);
+            System.out.println("Data written to file successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Phonebook[] readFromFile(String filename) {
+        Phonebook[] phonebooks = null;
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+            phonebooks = (Phonebook[]) ois.readObject();
+            System.out.println("Data read from file successfully.");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return phonebooks;
+    }
+}
+
+public class TestPhonebook {
+    public static void main(String[] args) {
+        // Creating Phonebook objects
+        Phonebook[] phonebooks = {
+                new Phonebook("John", "friends", 0, 0),
+                new Phonebook("Jane", "relatives", 1, 1),
+                new Phonebook("Bob", "business/official", 0, 2),
+                new Phonebook("Alice", "relatives", 3, 0)
+        };
+
+        // Writing Phonebook objects to file
+        FileHandler.writeToFile(phonebooks, "phonebook_data.dat");
+
+        // Reading Phonebook objects from file
+        Phonebook[] readPhonebooks = FileHandler.readFromFile("phonebook_data.dat");
+
+        // Displaying Phonebook objects whose primary contact is 0
+        for (Phonebook entry : readPhonebooks) {
+            if (entry != null && entry.search("John")) {
+                entry.display();
+            }
+        }
+    }
+}
