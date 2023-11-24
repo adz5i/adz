@@ -1,0 +1,95 @@
+import java.util.Scanner;
+
+// Custom exception for invalid loan input
+class InvalidLoanInputException extends Exception {
+    public InvalidLoanInputException(String message) {
+        super(message);
+    }
+}
+
+// Loan class
+class Loan {
+    private double loanAmount;
+    private double interestRate;
+    private int loanPeriod;
+
+    // Constructor
+    public Loan(double loanAmount, double interestRate, int loanPeriod) throws InvalidLoanInputException {
+        if (loanAmount <= 0 || interestRate <= 0 || loanPeriod <= 0) {
+            throw new InvalidLoanInputException("Loan amount, interest rate, and loan period must be greater than zero.");
+        }
+
+        this.loanAmount = loanAmount;
+        this.interestRate = interestRate;
+        this.loanPeriod = loanPeriod;
+    }
+
+    // Getters
+    public double getLoanAmount() {
+        return loanAmount;
+    }
+
+    public double getInterestRate() {
+        return interestRate;
+    }
+
+    public int getLoanPeriod() {
+        return loanPeriod;
+    }
+}
+
+// LoanCalculator class
+class LoanCalculator {
+    public static double calculateMonthlyPayment(Loan loan) {
+        double monthlyInterestRate = loan.getInterestRate() / 100 / 12;
+        int numberOfPayments = loan.getLoanPeriod() * 12;
+
+        double monthlyPayment = (loan.getLoanAmount() * monthlyInterestRate) /
+                (1 - Math.pow(1 + monthlyInterestRate, -numberOfPayments));
+
+        return monthlyPayment;
+    }
+
+    public static double calculateTotalPayment(Loan loan) {
+        return calculateMonthlyPayment(loan) * loan.getLoanPeriod() * 12;
+    }
+}
+
+// Main program
+public class LoanCalculatorProgram {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        try {
+            // Get input values
+            System.out.print("Enter loan amount: ");
+            double loanAmount = scanner.nextDouble();
+
+            System.out.print("Enter interest rate (%): ");
+            double interestRate = scanner.nextDouble();
+
+            System.out.print("Enter loan period (in years): ");
+            int loanPeriod = scanner.nextInt();
+
+            // Create Loan object
+            Loan loan = new Loan(loanAmount, interestRate, loanPeriod);
+
+            // Calculate and display results
+            System.out.println("\nLoan Details:");
+            System.out.println("Loan Amount: $" + loan.getLoanAmount());
+            System.out.println("Interest Rate: " + loan.getInterestRate() + "%");
+            System.out.println("Loan Period: " + loan.getLoanPeriod() + " years");
+
+            System.out.println("\nLoan Payments:");
+            System.out.println("Monthly Payment: $" + LoanCalculator.calculateMonthlyPayment(loan));
+            System.out.println("Total Payment: $" + LoanCalculator.calculateTotalPayment(loan));
+
+        } catch (InvalidLoanInputException e) {
+            System.err.println("Error: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Error: Invalid input. Please enter valid numeric values.");
+        } finally {
+            scanner.close();
+        }
+    }
+}
